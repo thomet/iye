@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>IYE</title>
+    <title>Tolkien</title>
     <style>
       /* GENERAL */
       body {
@@ -12,6 +12,7 @@
 
       /* HEADER */
       .header {
+        min-width: 946px;
         margin: 0;
         padding: 1em;
         background-color: #fff;
@@ -99,9 +100,9 @@
 
   <body>
     <div class="header">
-      <h1>IYE</h1>
+      <h1>Tolkien</h1>
 
-      <form action="/" method="get">
+      <form action="/<%= relative_root %>/" method="get">
         <label>
           Key:
           <input name="filters[key]" type="text" value="<%= filters["key"] %>" />
@@ -124,10 +125,14 @@
         <input type="submit" value="Filter" />
       </form>
 
-      <form action="/" method="get">
+      <form action="/<%= relative_root %>/" method="get">
         <input type="submit" value="Clear" />
       </form>
-      
+
+      <form action="/<%= relative_root %>/restart" method="get">
+        <input id="restart_servers" onclick="getElementById('restart_servers').value = 'Servers restarting...'" type="submit" value="Restart servers" />
+      </form>
+
       <div class="pull-right">
       </div>
     </div>

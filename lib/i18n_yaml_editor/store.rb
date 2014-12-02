@@ -3,10 +3,10 @@
 require "set"
 require "pathname"
 
-require "i18n_yaml_editor/transformation"
-require "i18n_yaml_editor/category"
-require "i18n_yaml_editor/key"
-require "i18n_yaml_editor/translation"
+require File.join File.dirname(__FILE__), "transformation.rb"
+require File.join File.dirname(__FILE__), "category.rb"
+require File.join File.dirname(__FILE__), "key.rb"
+require File.join File.dirname(__FILE__), "translation.rb"
 
 module I18nYamlEditor
   class DuplicateTranslationError < StandardError; end

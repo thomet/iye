@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require "i18n_yaml_editor"
+path = File.join File.dirname(__FILE__), '../lib/i18n_yaml_editor.rb'
+load path
 
-iye = I18nYamlEditor::App.new(ARGV[0])
+iye = I18nYamlEditor::App.new(*ARGV)
 iye.start

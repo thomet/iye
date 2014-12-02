@@ -3,7 +3,7 @@
 require "cuba"
 require "cuba/render"
 
-require "i18n_yaml_editor/app"
+require File.join File.dirname(__FILE__), "app.rb"
 
 module I18nYamlEditor
   class Web < Cuba
@@ -19,6 +19,7 @@ module I18nYamlEditor
     end
 
     define do
+      relative_root = app.relative_root
       on get, root do
         on param("filters") do |filters|
           options = {}
@@ -29,12 +30,12 @@ module I18nYamlEditor
 
           keys = app.store.filter_keys(options)
 
-          res.write view("translations.html", keys: keys, filters: filters)
+          res.write view("translations.html", keys: keys, filters: filters, :relative_root => relative_root)
         end
 
         on default do
           categories = app.store.categories.sort
-          res.write view("categories.html", categories: categories, filters: {})
+          res.write view("categories.html", categories: categories, filters: {}, :relative_root => relative_root)
         end
       end
 
@@ -46,11 +47,19 @@ module I18nYamlEditor
           app.save_translations
         end
 
-        res.redirect "/?#{Rack::Utils.build_nested_query(filters: req["filters"])}"
+        res.redirect "/#{relative_root}/?#{Rack::Utils.build_nested_query(filters: req["filters"])}"
       end
 
       on get, "debug" do
-        res.write partial("debug.html", translations: app.store.translations.values)
+        res.write partial("debug.html", translations: app.store.translations.values, :relative_root => relative_root)
+      end
+
+      on get, "restart" do
+        system File.join File.dirname(__FILE__), "../../bin/restart_mso.sh"
+        system File.join File.dirname(__FILE__), "../../bin/restart_so.sh"
+        sleep 7
+
+        res.redirect "/#{relative_root}/"
       end
     end
   end

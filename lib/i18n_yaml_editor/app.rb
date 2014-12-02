@@ -3,19 +3,22 @@
 require "psych"
 require "yaml"
 
-require "i18n_yaml_editor"
-require "i18n_yaml_editor/web"
-require "i18n_yaml_editor/store"
+require File.join File.dirname(__FILE__), "../i18n_yaml_editor.rb"
+require File.join File.dirname(__FILE__), "../i18n_yaml_editor/web.rb"
+require File.join File.dirname(__FILE__), "../i18n_yaml_editor/store.rb"
 
 module I18nYamlEditor
   class App
-    def initialize path
+
+    def initialize path, port, relative_root
       @path = File.expand_path(path)
+      @port = port
+      @relative_root = relative_root
       @store = Store.new
       I18nYamlEditor.app = self
     end
 
-    attr_accessor :store
+    attr_accessor :store, :relative_root
 
     def start
       $stdout.puts " * Loading translations from #{@path}"
@@ -25,7 +28,7 @@ module I18nYamlEditor
       store.create_missing_keys
 
       $stdout.puts " * Starting web editor at port 5050"
-      Rack::Server.start :app => Web, :Port => 5050
+      Rack::Server.start :app => Web, :Port => (@port || 5050)
     end
 
     def load_translations

@@ -46,3 +46,44 @@ The source ships with a `config.ru` suitable for development use with `shotgun(1
 
 **``psych.rb:203:in `parse': wrong number of arguments(2 for 1) (ArgumentError)``**
 : This is caused by a mismatch of the `psych` in standard library and the gem. The bug is fixed in Ruby 1.9.3-p194.
+
+
+## Sage One Config
+# sudo vim /etc/nginx/nginx.conf
+# sudo service nginx restart
+#nginx.conf
+  location /tolkin {
+      proxy_pass     http://localhost:5050/;
+      proxy_redirect default;
+      proxy_set_header Host $host:80;
+      proxy_read_timeout 900;
+      proxy_send_timeout 900;
+  }
+
+
+
+      location /buchhaltung/tolkin {
+          proxy_pass     http://localhost:5051/;
+          proxy_redirect default;
+          proxy_set_header Host $host:80;
+          proxy_read_timeout 900;
+          proxy_send_timeout 900;
+      }
+
+
+#MSO
+$ cd /home/wteuber/SD/mysageone_de/host_app/config/locales
+$ /home/wteuber/SD/iye/bin/iye . 5050 tolkien
+
+#SO
+$ cd /home/wteuber/SD/einfach_buero/host_app/config/locales
+$ /home/wteuber/SD/iye/bin/iye . 5051 buchhaltung/tolkien
+
+
+#MSO
+http://sageone.com
+http://sageone.com/tolkien
+
+#SO
+http://sageone.com/buchhaltung
+http://sageone.com/buchhaltung/tolkien
