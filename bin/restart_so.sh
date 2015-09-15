@@ -1,7 +1,8 @@
 #!/bin/sh
-kill `ps -ax | grep rails | grep 3030 | grep -oe "^[0-9]*"`
+kill `ps -ax | grep puma | grep 3032 | tr -d " " | grep -oe "^[0-9]*"`
 sleep 3
 PWD=`pwd`
-cd /home/wteuber/SD/einfach_buero/host_app
-  RAILS_RELATIVE_URL_ROOT=/buchhaltung rails s -p 3030 &
+cd /home/wteuber/SD/sage_one_advanced/host_app
+  bundle exec rake i18n:js:export
+  bundle exec puma &
 cd $PWD

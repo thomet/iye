@@ -21,21 +21,22 @@ module I18nYamlEditor
       result = {}
       hash.each {|key, value|
         begin
-          sub_result = result
-          keys = key.split(".")
-          keys.each_with_index {|k, idx|
-            if keys.size - 1 == idx
-              sub_result[k.to_sym] = value
-            else
-              sub_result = (sub_result[k.to_sym] ||= {})
-            end
-          }
+          add_key_rec(result, key.split('.'), value)
         rescue => e
           raise TransformationError.new("Failed to nest key: #{key.inspect} with value: #{value.inspect}")
         end
       }
       result
     end
+
+    def add_key_rec(hash, keys, value)
+      key = keys.shift
+      return value unless key
+      hash[key] = add_key_rec(hash[key] || {}, keys, value)
+      return hash[key] unless keys.empty?
+      hash
+    end
+
     module_function :nest_hash
   end
 end
