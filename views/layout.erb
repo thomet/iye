@@ -32,7 +32,13 @@
       .header h1 {
         margin-right: 2em;
       }
-      
+
+     .header div{
+       display: inline;
+       vertical-align: middle;
+       margin: 0 10px;
+     }
+
       .pull-right {
         float:right;
         padding-right:20px;
@@ -127,6 +133,12 @@
       <form action="/" method="get">
         <input type="submit" value="Clear" />
       </form>
+
+      <% if keys %>
+      <div>
+        stats: <%= {total: keys.length, empty: keys.count{|_,key| key.empty?}, incomplete: keys.count{|_,key| !key.complete?}, done: keys.count{|_,key| key.complete?}}.to_json %>
+      </div>
+      <% end %>
       
       <div class="pull-right">
       </div>
